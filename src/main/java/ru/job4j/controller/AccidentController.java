@@ -28,7 +28,7 @@ public class AccidentController {
         return "redirect:/index";
     }
 
-    @PostMapping("/formUpdateAccident")
+    @GetMapping("/formUpdateAccident")
     public String update(Model model, @RequestParam("id") int id) {
         Optional<Accident> optAccident = accidents.findById(id);
         if (optAccident.isEmpty()) {
@@ -36,5 +36,11 @@ public class AccidentController {
         }
         model.addAttribute("accident", optAccident.get());
         return "formUpdateAccident";
+    }
+
+    @PostMapping("/updateAccident")
+    public String update(@ModelAttribute Accident accident) {
+        accidents.update(accident);
+        return "redirect:/index";
     }
 }
