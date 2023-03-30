@@ -53,14 +53,17 @@ public class AccidentController {
         model.addAttribute("accident", optAccident.get());
         model.addAttribute("fail", fail != null);
         model.addAttribute("rules", ruleService.findAll());
-        model.addAttribute("types",typeService.findAll());
+        model.addAttribute("types", typeService.findAll());
         return "formUpdateAccident";
     }
 
     @PostMapping("/updateAccident")
-    public String update(@ModelAttribute Accident accident,
-                         HttpServletRequest req) {
-        accidentService.update(accident);
+    public String update(@ModelAttribute Accident accident, HttpServletRequest req) {
+        int typeId = accident.getType().getId();
+        String[] ruleIds = req.getParameterValues("rIds");
+        if (!accidentService.update(accident, typeId, ruleIds)) {
+            return "redirect:/formUpdateAccident?fail=true";
+        }
         return "redirect:/index";
     }
 }

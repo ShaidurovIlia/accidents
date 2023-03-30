@@ -5,7 +5,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -24,5 +25,5 @@ public class Accident {
 
     private AccidentType type;
 
-    private Set<Rule> rules;
+    private List<Rule> rules = new ArrayList<>();
 }
