@@ -5,11 +5,11 @@ import org.springframework.stereotype.Service;
 import ru.job4j.model.Accident;
 import ru.job4j.model.AccidentType;
 import ru.job4j.model.Rule;
-import ru.job4j.repository.AccidentJdbcTemplate;
+import ru.job4j.repository.AccidentHibernate;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @AllArgsConstructor
@@ -17,9 +17,9 @@ public class AccidentService {
     private final TypeService typeService;
     private final RuleService ruleService;
 
-    private final AccidentJdbcTemplate accidentsRepository;
+    private final AccidentHibernate accidentsRepository;
 
-    public List<Accident> findAll() {
+    public Set<Accident> findAll() {
         return accidentsRepository.findAll();
     }
 
@@ -42,11 +42,11 @@ public class AccidentService {
     }
 
     public Optional<Accident> findById(int id) {
-        return Optional.ofNullable(accidentsRepository.findById(id));
+        return accidentsRepository.findById(id);
     }
 
     private Optional<Accident> loadTypeAndRules(Accident accident, int typeId, String[] ids) {
-        List<Rule> rules = new ArrayList<>();
+        Set<Rule> rules = new HashSet<>();
         Optional<AccidentType> typeOpt = typeService.findById(typeId);
         if (typeOpt.isEmpty()) {
             return Optional.empty();

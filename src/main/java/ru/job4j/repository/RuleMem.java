@@ -3,10 +3,7 @@ package ru.job4j.repository;
 import org.springframework.stereotype.Repository;
 import ru.job4j.model.Rule;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -21,8 +18,8 @@ public class RuleMem {
         rules.put(3, new Rule(3, "Rule.3"));
     }
 
-    public List<Rule> findAll() {
-        return new ArrayList<>(rules.values());
+    public Set<Rule> findAll() {
+        return new HashSet<>(rules.values());
     }
 
     public void create(Rule rule) {

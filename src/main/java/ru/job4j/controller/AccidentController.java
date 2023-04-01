@@ -20,11 +20,10 @@ import java.util.Optional;
 public class AccidentController {
     private final AccidentService accidentService;
     private final TypeService typeService;
-
     private final RuleService ruleService;
 
     @GetMapping("/createAccident")
-    public String viewCreateAccident(Model model,
+    public String create(Model model,
                                      @RequestParam(name = "fail", required = false) Boolean fail) {
         model.addAttribute("fail", fail != null);
         model.addAttribute("rules", ruleService.findAll());

@@ -5,16 +5,21 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@Entity
+@Table
 public class Accident {
 
     @EqualsAndHashCode.Include
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     private String name;
@@ -23,7 +28,15 @@ public class Accident {
 
     private String address;
 
+    @ManyToOne
+    @JoinColumn(name = "type_id")
     private AccidentType type;
 
-    private List<Rule> rules = new ArrayList<>();
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "accident_rule",
+            joinColumns = {@JoinColumn(name = "accident_id")},
+            inverseJoinColumns = {@JoinColumn(name = "rule_id")}
+    )
+    private Set<Rule> rules = new HashSet<>();
 }
