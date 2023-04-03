@@ -1,26 +1,28 @@
 package ru.job4j.service;
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.job4j.model.Accident;
 import ru.job4j.model.AccidentType;
 import ru.job4j.model.Rule;
-import ru.job4j.repository.AccidentHibernate;
+import ru.job4j.repository.AccidentRepository;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
 @Service
 @AllArgsConstructor
 public class AccidentService {
+    private final AccidentRepository accidentsRepository;
     private final TypeService typeService;
     private final RuleService ruleService;
 
-    private final AccidentHibernate accidentsRepository;
-
-    public Set<Accident> findAll() {
-        return accidentsRepository.findAll();
+    public List<Accident> findAll() {
+        return (List<Accident>) accidentsRepository.findAll();
     }
 
     public boolean create(Accident accident, int typeId, String[] ids) {
@@ -28,7 +30,7 @@ public class AccidentService {
         if (accidentOpt.isEmpty()) {
             return false;
         }
-        accidentsRepository.create(accidentOpt.get());
+        accidentsRepository.save(accidentOpt.get());
         return true;
     }
 
@@ -37,7 +39,7 @@ public class AccidentService {
         if (accidentOpt.isEmpty()) {
             return false;
         }
-        accidentsRepository.update(accidentOpt.get());
+        accidentsRepository.save(accidentOpt.get());
         return true;
     }
 

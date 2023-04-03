@@ -7,12 +7,12 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import ru.job4j.model.Accident;
 import ru.job4j.model.Rule;
-import ru.job4j.service.RuleService;
 import ru.job4j.service.TypeService;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashSet;
 import java.util.List;
 
 @Repository
@@ -28,16 +28,16 @@ public class AccidentJdbcTemplate {
     private final static String FIND_ALL = "select * from accident order by id";
     private final static String FIND_BY_ID = "select * from accident where id = ?";
 
+    private final static String FIND_RULES_BY_ACCIDENT_ID = "select ar.accident_id,"
+            + " ar.rule_id, r.name from accident_rule ar"
+            + "join rule r on ar.rule_id = r.id where ar.accident_id = ?";
+
     private final JdbcTemplate jdbc;
     private final TypeService typeService;
-    private final RuleService ruleService;
 
-    public AccidentJdbcTemplate(JdbcTemplate jdbc,
-                                TypeService typeService,
-                                RuleService ruleService) {
+    public AccidentJdbcTemplate(JdbcTemplate jdbc, TypeService typeService) {
         this.jdbc = jdbc;
         this.typeService = typeService;
-        this.ruleService = ruleService;
     }
 
     public Accident create(Accident accident) {
@@ -88,6 +88,16 @@ public class AccidentJdbcTemplate {
         }
     }
 
+    private List<Rule> findRulesByAccidentId(int accidentId) {
+        return jdbc.query(FIND_RULES_BY_ACCIDENT_ID,
+                (rs, row) -> {
+                    Rule rule = new Rule();
+                    rule.setId(rs.getInt("rule_id"));
+                    rule.setName(rs.getString("name"));
+                    return rule;
+                }, accidentId);
+    }
+
     private class AccidentMapper implements RowMapper<Accident> {
         @Override
         public Accident mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -97,7 +107,7 @@ public class AccidentJdbcTemplate {
             accident.setText(rs.getString("text"));
             accident.setAddress(rs.getString("address"));
             accident.setType(typeService.findById(rs.getInt("type_id")).get());
-            accident.setRules(ruleService.findRulesByAccidentId(accident.getId()));
+            accident.setRules(new HashSet<>(findRulesByAccidentId(accident.getId())));
             return accident;
         }
     }
