@@ -16,6 +16,20 @@
             crossorigin="anonymous"></script>
 
     <title>Car Accidents</title>
+    <style>
+         body {
+    background-color: #f8f9fa;
+    }
+
+    .navbar-brand, .nav-item {
+    color: #fff;
+    font-weight: bold;
+    }
+    .btn-primary {
+    background-color: #ffc107;
+    border-color: #ffc107;
+  }
+    </style>
 </head>
 <body>
 <div class="container">
@@ -75,7 +89,9 @@
                                     th:value="${rule.id}"></option>
                         </select>
                     </div>
-                    <button type="submit" class="btn btn-primary mt-3">Submit</button>
+                    <div class="form-group d-flex justify-content-center">
+                        <button type="submit" class="btn btn-primary mt-3">Submit</button>
+                    </div>
                 </form>
             </div>
         </div>
