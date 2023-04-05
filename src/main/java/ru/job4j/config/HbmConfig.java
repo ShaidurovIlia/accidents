@@ -21,7 +21,7 @@ public class HbmConfig {
     @Bean
     public LocalSessionFactoryBean sf(
             @Value("${hibernate.dialect}") String dialect, DataSource ds) {
-        LocalSessionFactoryBean sf = new LocalSessionFactoryBean();
+        var sf = new LocalSessionFactoryBean();
         sf.setDataSource(ds);
         sf.setPackagesToScan("ru.job4j.model");
         Properties cfg = new Properties();
@@ -32,7 +32,7 @@ public class HbmConfig {
 
     @Bean
     public PlatformTransactionManager htx(SessionFactory sf) {
-        HibernateTransactionManager tx = new HibernateTransactionManager();
+        var tx = new HibernateTransactionManager();
         tx.setSessionFactory(sf);
         return tx;
     }

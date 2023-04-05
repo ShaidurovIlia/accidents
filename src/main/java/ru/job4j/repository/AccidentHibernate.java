@@ -28,18 +28,21 @@ public class AccidentHibernate {
     }
 
     public void delete(int accidentId) {
-        crudRepository.run("delete from Accident where id = :tId",
+        crudRepository.run(
+                "delete from Accident where id = :tId",
                 Map.of("tId", accidentId));
     }
 
     public Set<Accident> findAll() {
-        return new HashSet<>(crudRepository.query("from Accident a join fetch a.rules order by a.id",
+        return new HashSet<>(crudRepository.query(
+                "from Accident a join fetch a.rules order by a.id",
                 Accident.class));
     }
 
     public Optional<Accident> findById(int id) {
         return crudRepository
-                .optional("from Accident a join fetch a.type join fetch a.rules where a.id = :fId",
+                .optional(
+                        "from Accident a join fetch a.type join fetch a.rules where a.id = :fId",
                         Accident.class,
                         Map.of("fId", id));
     }
