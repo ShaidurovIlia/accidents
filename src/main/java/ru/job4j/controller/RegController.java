@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.job4j.model.User;
-import ru.job4j.repository.AuthorityRepository;
+import ru.job4j.service.AuthorityService;
 import ru.job4j.service.UserService;
 
 @Controller
@@ -17,7 +17,7 @@ import ru.job4j.service.UserService;
 public class RegController {
     private final PasswordEncoder encoder;
     private final UserService users;
-    private final AuthorityRepository authorities;
+    private final AuthorityService authorities;
 
     @PostMapping("/reg")
     public String regSave(@ModelAttribute User user) {
